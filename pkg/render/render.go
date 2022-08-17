@@ -6,15 +6,19 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/rafaelmardones/go-tour/pkg/config"
 )
+
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 
 func RenderTemplate(w http.ResponseWriter, templateName string) {
 
-	// create a template cache
-	tc, err := createTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-	}
+	tc := app.TemplateCache
 
 	// get the requested template from cache
 	t, ok := tc[templateName]
@@ -24,7 +28,7 @@ func RenderTemplate(w http.ResponseWriter, templateName string) {
 
 	buf := new(bytes.Buffer)
 
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -36,7 +40,7 @@ func RenderTemplate(w http.ResponseWriter, templateName string) {
 	}
 }
 
-func createTemplateCache() (map[string]*template.Template, error) {
+func CreateTemplateCache() (map[string]*template.Template, error) {
 	var tc = map[string]*template.Template{}
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {
