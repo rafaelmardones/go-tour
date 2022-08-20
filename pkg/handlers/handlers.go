@@ -14,8 +14,8 @@ type Repository struct {
 	App *config.AppConfig
 }
 
-func NewRepo(a *config.AppConfig) *Repository {
-	return &Repository{
+func NewRepo(a *config.AppConfig) {
+	Repo = &Repository{
 		App: a,
 	}
 }

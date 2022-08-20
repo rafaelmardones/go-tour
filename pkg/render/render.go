@@ -51,6 +51,7 @@ func RenderTemplate(w http.ResponseWriter, templateName string, td *models.Templ
 }
 
 func CreateTemplateCache() (map[string]*template.Template, error) {
+	log.Println("Creating template cache")
 	var tc = map[string]*template.Template{}
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {

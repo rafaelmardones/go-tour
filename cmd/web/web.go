@@ -21,10 +21,16 @@ func main() {
 	app.TemplateCache = tc
 	app.UseCache = false
 	render.NewTemplates(&app)
-	repo := handlers.NewRepo(&app)
-	http.HandleFunc("/", repo.Home)
-	http.HandleFunc("/about", repo.About)
+	handlers.NewRepo(&app)
 
 	fmt.Printf("Starting server on port %s\n", port)
-	http.ListenAndServe(":8083", nil)
+
+	server := http.Server{
+		Addr:    port,
+		Handler: routes(&app),
+	}
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatal("error on ListenAndServe:", err)
+	}
 }
