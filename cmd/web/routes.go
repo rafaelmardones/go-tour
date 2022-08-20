@@ -12,7 +12,7 @@ import (
 func routes(app *config.AppConfig) http.Handler {
 	r := chi.NewRouter()
 
-	r.Use(middleware.Logger)
+	r.Use(NoSurf)
 	r.Use(middleware.Recoverer)
 	r.Get("/", handlers.Repo.Home)
 	r.Get("/about", handlers.Repo.About)
