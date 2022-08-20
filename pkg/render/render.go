@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/rafaelmardones/go-tour/pkg/config"
+	"github.com/rafaelmardones/go-tour/pkg/models"
 )
 
 var app *config.AppConfig
@@ -16,9 +17,17 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, templateName string) {
+func AddDefaultData(td *models.TemplateData) {
+	td.StringMap["test"] = "Override!"
+}
 
-	tc := app.TemplateCache
+func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) {
+	var tc map[string]*template.Template
+	if app.UseCache {
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
+	}
 
 	// get the requested template from cache
 	t, ok := tc[templateName]
@@ -28,7 +37,8 @@ func RenderTemplate(w http.ResponseWriter, templateName string) {
 
 	buf := new(bytes.Buffer)
 
-	err := t.Execute(buf, nil)
+	AddDefaultData(td)
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println(err)
 	}
