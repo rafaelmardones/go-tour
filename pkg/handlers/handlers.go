@@ -21,6 +21,10 @@ func NewRepo(a *config.AppConfig) {
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	// just to test session storage:
+	remote_ip := r.RemoteAddr
+	Repo.App.Session.Put(r.Context(), "remote_ip", remote_ip)
+
 	var stringMap = make(map[string]string)
 	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
@@ -30,6 +34,11 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	var stringMap = make(map[string]string)
 	stringMap["test"] = "Hoi! Hello again!"
+
+	// just to test session storage (retrieval):
+	remote_ip := Repo.App.Session.GetString(r.Context(), "remote_ip")
+	stringMap["remote_ip"] = remote_ip
+
 	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
