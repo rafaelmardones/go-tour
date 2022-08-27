@@ -43,3 +43,10 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 		StringMap: stringMap,
 	})
 }
+
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	var stringMap = make(map[string]string)
+	render.RenderTemplate(w, "login.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
+	})
+}
