@@ -26,7 +26,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	Repo.App.Session.Put(r.Context(), "remote_ip", remote_ip)
 
 	var stringMap = make(map[string]string)
-	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{
+	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
 }
@@ -39,14 +39,17 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	remote_ip := Repo.App.Session.GetString(r.Context(), "remote_ip")
 	stringMap["remote_ip"] = remote_ip
 
-	render.RenderTemplate(w, "signup.page.tmpl", &models.TemplateData{
+	render.RenderTemplate(w, r, "signup.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
 }
 
+func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Form submitted"))
+}
 func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	var stringMap = make(map[string]string)
-	render.RenderTemplate(w, "login.page.tmpl", &models.TemplateData{
+	render.RenderTemplate(w, r, "login.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
 }

@@ -17,6 +17,7 @@ func routes(app *config.AppConfig) http.Handler {
 	r.Use(SessionLoad)
 	r.Get("/", handlers.Repo.Home)
 	r.Get("/signup", handlers.Repo.SignUp)
+	r.Post("/signup", handlers.Repo.PostSignUp)
 	r.Get("/login", handlers.Repo.Login)
 	fs := http.FileServer(http.Dir("./static"))
 	r.Handle("/static/*", http.StripPrefix("/static", fs))

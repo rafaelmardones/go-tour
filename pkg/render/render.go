@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/justinas/nosurf"
 	"github.com/rafaelmardones/go-tour/pkg/config"
 	"github.com/rafaelmardones/go-tour/pkg/models"
 )
@@ -17,11 +18,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *models.TemplateData) {
+func AddDefaultData(td *models.TemplateData, r *http.Request) {
+	td.CSRFToken = nosurf.Token(r)
 	td.StringMap["test"] = "Override!"
 }
 
-func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, r *http.Request, templateName string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	if app.UseCache {
 		tc = app.TemplateCache
@@ -37,7 +39,7 @@ func RenderTemplate(w http.ResponseWriter, templateName string, td *models.Templ
 
 	buf := new(bytes.Buffer)
 
-	AddDefaultData(td)
+	AddDefaultData(td, r)
 	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println(err)
