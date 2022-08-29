@@ -7,7 +7,7 @@
 
     <div class="row g-5">
         <div class="col">
-        <form action="/signup" method="post" class="needs-validation" novalidate>
+        <form id="signup-form" action="/signup" method="post" class="needs-validation" novalidate>
             <input type="hidden" name="csrf_token" value={{.CSRFToken}}>
             <div class="row g-3">
             <div class="col-sm-6">
@@ -63,4 +63,28 @@
         max-width: 540px;
     }
 </style>
+{{end}}
+{{define "js"}}
+<script>
+    var usernameCheckTimeout = false;
+    document.getElementById("username").addEventListener("keyup", (e)=>{
+        if(usernameCheckTimeout!==false)
+            clearTimeout(usernameCheckTimeout);
+        usernameCheckTimeout = setTimeout(checkUsernameAvailable, 3000);
+    });
+    checkUsernameAvailable = () => {
+        let username = document.getElementById('username').value;
+        let formData = new FormData();
+        formData.append("csrf_token", "{{.CSRFToken}}");
+        formData.append("username", username);
+        fetch("/check-username-available", {
+            method: "post",
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    };
+</script>
 {{end}}

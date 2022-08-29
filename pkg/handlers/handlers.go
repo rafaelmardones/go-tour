@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/rafaelmardones/go-tour/pkg/config"
 	"github.com/rafaelmardones/go-tour/pkg/models"
@@ -47,6 +50,33 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Form submitted"))
 }
+
+type checkUsernameAvailabilityJson struct {
+	Username  string `json:"username"`
+	Available bool   `json:"available"`
+}
+
+func (m *Repository) CheckUsernameAvailability(w http.ResponseWriter, r *http.Request) {
+	username := r.Form.Get("username")
+	notAvailableUsernames := []string{"signup", "login", "dashboard"}
+	available := true
+	for _, forbiddenUsername := range notAvailableUsernames {
+		if strings.ToLower(username) == forbiddenUsername {
+			available = false
+		}
+	}
+	resp := checkUsernameAvailabilityJson{
+		Username:  username,
+		Available: available,
+	}
+	out, err := json.Marshal(resp)
+	if err != nil {
+		log.Println("Error in CheckUsernameAvailability: ", err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
 func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 	var stringMap = make(map[string]string)
 	render.RenderTemplate(w, r, "login.page.tmpl", &models.TemplateData{
