@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/rafaelmardones/go-tour/pkg/config"
-	"github.com/rafaelmardones/go-tour/pkg/models"
-	"github.com/rafaelmardones/go-tour/pkg/render"
+	"github.com/rafaelmardones/go-tour/internal/config"
+	"github.com/rafaelmardones/go-tour/internal/models"
+	"github.com/rafaelmardones/go-tour/internal/render"
 )
 
 var Repo *Repository

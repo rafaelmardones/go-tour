@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/rafaelmardones/go-tour/pkg/config"
-	"github.com/rafaelmardones/go-tour/pkg/handlers"
-	"github.com/rafaelmardones/go-tour/pkg/render"
+	"github.com/rafaelmardones/go-tour/internal/config"
+	"github.com/rafaelmardones/go-tour/internal/handlers"
+	"github.com/rafaelmardones/go-tour/internal/render"
 )
 
 const port = ":8083"
