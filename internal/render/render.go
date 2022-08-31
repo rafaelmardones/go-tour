@@ -20,7 +20,6 @@ func NewTemplates(a *config.AppConfig) {
 
 func AddDefaultData(td *models.TemplateData, r *http.Request) {
 	td.CSRFToken = nosurf.Token(r)
-	td.StringMap["test"] = "Override!"
 }
 
 func RenderTemplate(w http.ResponseWriter, r *http.Request, templateName string, td *models.TemplateData) {

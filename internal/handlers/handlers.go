@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/rafaelmardones/go-tour/internal/config"
+	"github.com/rafaelmardones/go-tour/internal/forms"
 	"github.com/rafaelmardones/go-tour/internal/models"
 	"github.com/rafaelmardones/go-tour/internal/render"
 )
@@ -35,19 +36,41 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
-	var stringMap = make(map[string]string)
-	stringMap["test"] = "Hoi! Hello again!"
-
-	// just to test session storage (retrieval):
-	remote_ip := Repo.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remote_ip
-
 	render.RenderTemplate(w, r, "signup.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
+		Form: forms.New(nil),
 	})
 }
 
 func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	user := models.User{
+		Name:     r.Form.Get("name"),
+		Username: r.Form.Get("username"),
+		Email:    r.Form.Get("email"),
+		Password: r.Form.Get("password"),
+	}
+
+	form := forms.New(r.PostForm)
+
+	form.Has("name", r)
+	form.Has("username", r)
+	form.Has("email", r)
+	form.Has("password", r)
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["user"] = user
+		render.RenderTemplate(w, r, "signup.page.tmpl", &models.TemplateData{
+			Form: form,
+			Data: data,
+		})
+		return
+	}
+
 	w.Write([]byte("Form submitted"))
 }
 

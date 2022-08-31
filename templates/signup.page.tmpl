@@ -12,15 +12,17 @@
             <div class="row g-3">
             <div class="col-sm-6">
                 <label for="firstName" class="form-label">your name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <input type="text" name="name" class="form-control {{with .Form.Errors.Get "name"}}is-invalid{{end}}" id="firstName" placeholder="" value="" required>
+                {{with .Form.Errors.Get "name"}}
                 <div class="invalid-feedback">
-                Your name is required.
+                {{.}}
                 </div>
+                {{end}}
             </div>
             <div class="col-sm-6">
                 <label for="username" class="form-label">username</label>
                 <div class="input-group has-validation">
-                <input type="text" class="form-control" id="username" placeholder="" required>
+                <input type="text" name="username" class="form-control" id="username" placeholder="" required>
                 <div class="invalid-feedback">
                     Your username is required.
                 </div>
@@ -29,7 +31,7 @@
 
             <div class="col-12">
                 <label for="email" class="form-label">email</label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" required>
                 <div class="invalid-feedback">
                 Please your email address.
                 </div>
@@ -37,7 +39,7 @@
 
             <div class="col-sm-6">
                 <label for="password" class="form-label">choose a password</label>
-                <input type="password" class="form-control" id="password" placeholder="" required>
+                <input type="password" name="password" class="form-control" id="password" placeholder="" required>
                 <div class="invalid-feedback">
                 Please enter a password.
                 </div>
@@ -45,7 +47,7 @@
 
             <div class="col-sm-6 mb-5">
                 <label for="password-repeat" class="form-label">repeat the password</label>
-                <input type="password" class="form-control" id="password-repeat" placeholder="" required>
+                <input type="password" name="password2" class="form-control" id="password-repeat" placeholder="" required>
                 <div class="invalid-feedback">
                     Please repeat the password.
                 </div>
