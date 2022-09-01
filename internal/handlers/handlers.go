@@ -36,8 +36,11 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	data["user"] = models.User{}
 	render.RenderTemplate(w, r, "signup.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 }
 
@@ -56,10 +59,7 @@ func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-	form.Has("name", r)
-	form.Has("username", r)
-	form.Has("email", r)
-	form.Has("password", r)
+	form.Required("name", "username", "email", "password")
 
 	if !form.Valid() {
 		data := make(map[string]interface{})

@@ -7,22 +7,25 @@
 
     <div class="row g-5">
         <div class="col">
+
+        {{$user := index .Data "user"}}
+
         <form id="signup-form" action="/signup" method="post" class="needs-validation" novalidate>
             <input type="hidden" name="csrf_token" value={{.CSRFToken}}>
             <div class="row g-3">
             <div class="col-sm-6">
                 <label for="firstName" class="form-label">your name</label>
-                <input type="text" name="name" class="form-control {{with .Form.Errors.Get "name"}}is-invalid{{end}}" id="firstName" placeholder="" value="" required>
-                {{with .Form.Errors.Get "name"}}
+                <input type="text" name="name" class="form-control {{with .Form.Errors.Get "name"}}is-invalid{{end}}" 
+                id="firstName" placeholder="" value="{{$user.Name}}" required>
                 <div class="invalid-feedback">
-                {{.}}
+                    Your name is required.
                 </div>
-                {{end}}
             </div>
             <div class="col-sm-6">
                 <label for="username" class="form-label">username</label>
                 <div class="input-group has-validation">
-                <input type="text" name="username" class="form-control" id="username" placeholder="" required>
+                <input type="text" name="username" class="form-control {{with .Form.Errors.Get "username"}}is-invalid{{end}}" 
+                id="username" placeholder="" value="{{$user.Username}}" required>
                 <div class="invalid-feedback">
                     Your username is required.
                 </div>
@@ -31,17 +34,19 @@
 
             <div class="col-12">
                 <label for="email" class="form-label">email</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <input type="email" name="email" class="form-control {{with .Form.Errors.Get "email"}}is-invalid{{end}}" 
+                 id="email" placeholder="you@example.com" value="{{$user.Email}}" required>
                 <div class="invalid-feedback">
-                Please your email address.
+                    Please type in your email address.
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <label for="password" class="form-label">choose a password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="" required>
+                <input type="password" name="password" class="form-control {{with .Form.Errors.Get "password"}}is-invalid{{end}}" 
+                 id="password" placeholder="" required>
                 <div class="invalid-feedback">
-                Please enter a password.
+                    Please enter a password.
                 </div>
             </div>
 
