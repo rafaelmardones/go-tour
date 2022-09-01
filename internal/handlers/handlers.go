@@ -60,6 +60,7 @@ func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 
 	form.Required("name", "username", "email", "password")
+	form.IsEmail("email")
 
 	if !form.Valid() {
 		data := make(map[string]interface{})
