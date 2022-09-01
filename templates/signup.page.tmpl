@@ -18,7 +18,7 @@
                 <input type="text" name="name" class="form-control {{with .Form.Errors.Get "name"}}is-invalid{{end}}" 
                 id="firstName" placeholder="" value="{{$user.Name}}" required>
                 <div class="invalid-feedback">
-                    Your name is required.
+                    {{if .Form.Errors.Get "name"}} {{.Form.Errors.Get "name"}} {{else}}Your name is required.{{end}}
                 </div>
             </div>
             <div class="col-sm-6">
@@ -27,7 +27,7 @@
                 <input type="text" name="username" class="form-control {{with .Form.Errors.Get "username"}}is-invalid{{end}}" 
                 id="username" placeholder="" value="{{$user.Username}}" required>
                 <div class="invalid-feedback">
-                    Your username is required.
+                    {{if .Form.Errors.Get "username"}} {{.Form.Errors.Get "username"}} {{else}}Your username is required.{{end}}
                 </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <input type="email" name="email" class="form-control {{with .Form.Errors.Get "email"}}is-invalid{{end}}" 
                  id="email" placeholder="you@example.com" value="{{$user.Email}}" required>
                 <div class="invalid-feedback">
-                    Please type in your email address.
+                    {{if .Form.Errors.Get "email"}} {{.Form.Errors.Get "email"}} {{else}} Please type in your email address. {{end}}
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
                 <input type="password" name="password" class="form-control {{with .Form.Errors.Get "password"}}is-invalid{{end}}" 
                  id="password" placeholder="" required>
                 <div class="invalid-feedback">
-                    Please enter a password.
+                    {{if .Form.Errors.Get "password"}} {{.Form.Errors.Get "password"}} {{else}}Please enter a password.{{end}}
                 </div>
             </div>
 
