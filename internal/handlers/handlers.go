@@ -35,6 +35,19 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (m *Repository) Dashboard(w http.ResponseWriter, r *http.Request) {
+	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
+	if !ok {
+		log.Println("Could not read user from session")
+		return
+	}
+	data := make(map[string]interface{})
+	data["user"] = user
+	render.RenderTemplate(w, r, "dashboard.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
+}
+
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["user"] = models.User{}
@@ -72,7 +85,8 @@ func (m *Repository) PostSignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Form submitted"))
+	m.App.Session.Put(r.Context(), "user", user)
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 type checkUsernameAvailabilityJson struct {

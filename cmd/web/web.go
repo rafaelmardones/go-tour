@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/rafaelmardones/go-tour/internal/config"
 	"github.com/rafaelmardones/go-tour/internal/handlers"
+	"github.com/rafaelmardones/go-tour/internal/models"
 	"github.com/rafaelmardones/go-tour/internal/render"
 )
 
@@ -17,6 +19,7 @@ const port = ":8083"
 var app config.AppConfig
 
 func main() {
+	gob.Register(models.User{})
 
 	// change when in production
 	app.InProduction = false

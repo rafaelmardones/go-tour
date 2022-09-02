@@ -1,0 +1,38 @@
+{{template "login" .}}
+{{define "content"}}
+    <div class="py-5 text-center">
+        <div class="fs-1 cursive mb-4"><span class="brand-text-shadow">golinks</span> dashboard</div>
+        <p class="lead">this is just a placeholder for the future dashboard page</p>
+    </div>
+
+    <div class="row g-5">
+        <div class="col">
+            {{$user := index .Data "user"}}
+
+            <table class="table">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{$user.Name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{$user.Username}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{$user.Email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{end}}
+{{define "css"}}
+<style>
+    .container {
+        max-width: 540px;
+    }
+</style>
+{{end}}
