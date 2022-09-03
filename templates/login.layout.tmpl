@@ -94,6 +94,7 @@
     
     
         <script src="/docs/5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (() => {
@@ -114,6 +115,30 @@
                 }, false)
             })
             })()
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            });
+
+            {{with .Error}}
+              Toast.fire({
+                icon: 'error',
+                title: '{{.}}'
+              });
+            {{end}}
+            {{with .Flash}}
+              Toast.fire({
+                icon: 'success',
+                title: '{{.}}'
+              });
+            {{end}}
         </script>
         {{block "js" .}}
         {{end}}

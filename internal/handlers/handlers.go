@@ -39,6 +39,8 @@ func (m *Repository) Dashboard(w http.ResponseWriter, r *http.Request) {
 	user, ok := m.App.Session.Get(r.Context(), "user").(models.User)
 	if !ok {
 		log.Println("Could not read user from session")
+		m.App.Session.Put(r.Context(), "error", "Login or sign up to get started")
+		http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
 		return
 	}
 	data := make(map[string]interface{})
