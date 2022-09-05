@@ -19,6 +19,24 @@ const port = ":8083"
 var app config.AppConfig
 
 func main() {
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Starting server on port %s\n", port)
+
+	server := http.Server{
+		Addr:    port,
+		Handler: routes(&app),
+	}
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatal("error on ListenAndServe:", err)
+	}
+}
+
+func run() error {
 	gob.Register(models.User{})
 
 	// change when in production
@@ -34,21 +52,11 @@ func main() {
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		log.Fatal("cannot create template cache")
+		return err
 	}
 	app.TemplateCache = tc
 	app.UseCache = false
 	render.NewTemplates(&app)
 	handlers.NewRepo(&app)
-
-	fmt.Printf("Starting server on port %s\n", port)
-
-	server := http.Server{
-		Addr:    port,
-		Handler: routes(&app),
-	}
-	err = server.ListenAndServe()
-	if err != nil {
-		log.Fatal("error on ListenAndServe:", err)
-	}
+	return nil
 }
