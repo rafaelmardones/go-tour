@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 )
 
 var app *config.AppConfig
+var pathToTemplates = "./templates"
 
 func NewTemplates(a *config.AppConfig) {
 	app = a
@@ -54,13 +56,12 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, templateName string,
 }
 
 func CreateTemplateCache() (map[string]*template.Template, error) {
-	log.Println("Creating template cache")
 	var tc = map[string]*template.Template{}
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
+	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 	if err != nil {
 		return tc, err
 	}
-	layouts, err := filepath.Glob("./templates/*.layout.tmpl")
+	layouts, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 	if err != nil {
 		return tc, err
 	}
