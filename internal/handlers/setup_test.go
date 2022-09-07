@@ -46,7 +46,7 @@ func GetRoutes() http.Handler {
 
 	r := chi.NewRouter()
 
-	r.Use(NoSurf)
+	//r.Use(NoSurf)
 	r.Use(middleware.Recoverer)
 	r.Use(SessionLoad)
 	r.Get("/", Repo.Home)
